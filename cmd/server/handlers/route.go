@@ -22,7 +22,7 @@ func (h *RouteHandler) SetupRoutes(router *gin.Engine) {
 func (h *RouteHandler) GetRoutes(c *gin.Context) {
 	res, err := h.service.GetRoutes()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, res)
@@ -31,7 +31,7 @@ func (h *RouteHandler) GetRoutes(c *gin.Context) {
 func (h *RouteHandler) GetRoute(c *gin.Context) {
 	res, err := h.service.GetRoute(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, res)
@@ -48,7 +48,7 @@ func (h *RouteHandler) NewRoute(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, res)
+	c.JSON(http.StatusCreated, res)
 }
 
 // static functions

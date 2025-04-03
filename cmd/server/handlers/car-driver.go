@@ -37,7 +37,7 @@ func (h *CarDriverHandler) GetCarDriver(c *gin.Context) {
 func (h *CarDriverHandler) GetCarDrivers(c *gin.Context) {
 	drivers, err := h.service.GetDrivers()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 

@@ -37,7 +37,7 @@ func (h *VehicleHandler) GetVehicle(c *gin.Context) {
 func (h *VehicleHandler) GetVehicles(c *gin.Context) {
 	vehicles, err := h.service.GetVehicles()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
