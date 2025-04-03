@@ -27,9 +27,6 @@ func main() {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
 
-	// Auto-migrate models
-	autoMigrateModels(db)
-
 	// Repositories
 	routeRepository := route.NewRepository(db)
 	routePointRepository := routePoint.NewRepository(db)
@@ -82,42 +79,6 @@ func openConnectionDb() *gorm.DB {
 
 	log.Printf("Connected to database at %s", dbPath)
 	return db
-}
-
-func autoMigrateModels(db *gorm.DB) {
-	// Skip auto-migration to avoid foreign key issues
-	log.Println("Database migration skipped - using existing schema")
-
-	// Just verify tables exist
-	if !db.Migrator().HasTable(&vehicle.Vehicle{}) {
-		log.Println("Creating vehicle table")
-		if err := db.Migrator().CreateTable(&vehicle.Vehicle{}); err != nil {
-			log.Fatalf("Failed to create vehicle table: %v", err)
-		}
-	}
-
-	if !db.Migrator().HasTable(&carDriver.Driver{}) {
-		log.Println("Creating driver table")
-		if err := db.Migrator().CreateTable(&carDriver.Driver{}); err != nil {
-			log.Fatalf("Failed to create driver table: %v", err)
-		}
-	}
-
-	if !db.Migrator().HasTable(&route.Route{}) {
-		log.Println("Creating route table")
-		if err := db.Migrator().CreateTable(&route.Route{}); err != nil {
-			log.Fatalf("Failed to create route table: %v", err)
-		}
-	}
-
-	if !db.Migrator().HasTable(&routePoint.RoutePoint{}) {
-		log.Println("Creating route_point table")
-		if err := db.Migrator().CreateTable(&routePoint.RoutePoint{}); err != nil {
-			log.Fatalf("Failed to create route_point table: %v", err)
-		}
-	}
-
-	log.Println("Database check completed successfully")
 }
 
 func getEnv(key, fallback string) string {

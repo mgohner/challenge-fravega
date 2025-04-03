@@ -10,17 +10,17 @@ import (
 )
 
 type Route struct {
-	ID          uuid.UUID               `gorm:"column:id"`
-	Name        string                  `gorm:"column:name"`
-	Description string                  `gorm:"column:description"`
-	Status      string                  `gorm:"column:status"`
-	CreatedAt   time.Time               `gorm:"column:created_at"`
-	UpdatedAt   time.Time               `gorm:"column:updated_at"`
-	VehicleID   uuid.UUID               `gorm:"column:vehicle_id"`
-	Vehicle     vehicle.Vehicle         `gorm:"foreignKey:ID;references:VehicleID"`
-	DriverID    uuid.UUID               `gorm:"column:driver_id"`
-	Driver      carDriver.Driver        `gorm:"foreignKey:ID;references:DriverID"`
-	RoutePoints []routePoint.RoutePoint `gorm:"foreignKey:RouteID"`
+	ID          uuid.UUID               `gorm:"column:id" json:"id"`
+	Name        string                  `gorm:"column:name" json:"name"`
+	Description string                  `gorm:"column:description" json:"description"`
+	Status      string                  `gorm:"column:status" json:"status"`
+	CreatedAt   time.Time               `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt   time.Time               `gorm:"column:updated_at" json:"updated_at"`
+	VehicleID   uuid.UUID               `gorm:"column:vehicle_id" json:"vehicle_id"`
+	Vehicle     vehicle.Vehicle         `gorm:"foreignKey:ID;references:VehicleID" json:"vehicle"`
+	DriverID    uuid.UUID               `gorm:"column:driver_id" json:"driver_id"`
+	Driver      carDriver.Driver        `gorm:"foreignKey:ID;references:DriverID" json:"driver"`
+	RoutePoints []routePoint.RoutePoint `gorm:"foreignKey:RouteID" json:"route_points"`
 }
 
 type RouteStatus string
