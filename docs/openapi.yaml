@@ -1,0 +1,465 @@
+openapi: 3.0.3
+info:
+  title: Fravega Challenge API
+  description: API for managing vehicles, drivers, routes, and route points
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+    description: Local development server
+
+paths:
+  /vehicles:
+    get:
+      summary: Get all vehicles
+      description: Retrieve a list of all vehicles
+      operationId: getVehicles
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicles/{id}:
+    get:
+      summary: Get vehicle by ID
+      description: Retrieve a vehicle by its ID
+      operationId: getVehicleById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the vehicle to retrieve
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '400':
+          description: Invalid ID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Vehicle not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /car-drivers:
+    get:
+      summary: Get all drivers
+      description: Retrieve a list of all car drivers
+      operationId: getDrivers
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Driver'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /car-drivers/{id}:
+    get:
+      summary: Get driver by ID
+      description: Retrieve a car driver by its ID
+      operationId: getDriverById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the driver to retrieve
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Driver'
+        '400':
+          description: Invalid ID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Driver not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /routes:
+    get:
+      summary: Get all routes
+      description: Retrieve a list of all routes
+      operationId: getRoutes
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new route
+      description: Create a new delivery route
+      operationId: createRoute
+      requestBody:
+        description: Route object that needs to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoute'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /routes/{id}:
+    get:
+      summary: Get route by ID
+      description: Retrieve a route by its ID
+      operationId: getRouteById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the route to retrieve
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          description: Invalid ID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Route not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /route-points:
+    get:
+      summary: Get all route points
+      description: Retrieve a list of all route points
+      operationId: getRoutePoints
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoutePoint'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /route-points/add-purchase-order:
+    post:
+      summary: Add purchase order to route
+      description: Create a new route point with purchase order
+      operationId: addPurchaseOrder
+      requestBody:
+        description: Purchase order details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPurchaseOrder'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutePoint'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        plateNumber:
+          type: string
+          example: "ABC123"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - plateNumber
+
+    Driver:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        name:
+          type: string
+          example: "John Doe"
+        phoneNumber:
+          type: string
+          example: "+1234567890"
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        address:
+          type: string
+          example: "123 Main St, City"
+        identification:
+          type: string
+          example: "ID12345678"
+        licenseNumber:
+          type: string
+          example: "LIC987654321"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - phoneNumber
+        - email
+        - identification
+        - licenseNumber
+
+    Route:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        name:
+          type: string
+          example: "Downtown Delivery Route"
+        description:
+          type: string
+          example: "Delivery route for downtown area"
+        status:
+          type: string
+          enum: [pending, started, completed]
+          example: "pending"
+        vehicleId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+        driverId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        driver:
+          $ref: '#/components/schemas/Driver'
+        routePoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoutePoint'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - status
+        - vehicleId
+        - driverId
+
+    CreateRoute:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Downtown Delivery Route"
+        description:
+          type: string
+          example: "Delivery route for downtown area"
+        vehicle_id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        driver_id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+      required:
+        - name
+        - vehicle_id
+        - driver_id
+
+    RoutePoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        purchaseOrderId:
+          type: string
+          example: "PO12345"
+        routeId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        status:
+          type: string
+          enum: [pending, in_route, completed]
+          example: "pending"
+        latitude:
+          type: number
+          format: double
+          example: 40.7128
+        longitude:
+          type: number
+          format: double
+          example: -74.0060
+        address:
+          type: string
+          example: "123 Main St, City"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - purchaseOrderId
+        - routeId
+        - status
+        - latitude
+        - longitude
+        - address
+
+    AddPurchaseOrder:
+      type: object
+      properties:
+        route_id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        purchase_order_id:
+          type: string
+          example: "PO12345"
+        latitude:
+          type: number
+          format: double
+          example: 40.7128
+        longitude:
+          type: number
+          format: double
+          example: -74.0060
+        address:
+          type: string
+          example: "123 Main St, City"
+      required:
+        - route_id
+        - purchase_order_id
+        - latitude
+        - longitude
+        - address
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "An error occurred while processing the request"
+      required:
+        - error 

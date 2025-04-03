@@ -1,0 +1,14 @@
+{
+  "description": "Get purchase order by ID - success response",
+  "request": {
+    "method": "GET",
+    "path": "/purchase-orders/:id"
+  },
+  "response": {
+    "statusCode": 200,
+    "headers": {
+      "Content-Type": ["application/json"]
+    },
+    "body": "{\"success\":true,\"data\":{\"id\":\"{{request.params.id}}\",\"order_number\":\"PO-{{randomString '5' '0123456789'}}\",\"customer_name\":\"Test Customer\",\"delivery_address\":\"123 Test Street, Test City\",\"total_amount\":105.50,\"status\":\"PENDING\",\"items\":[{\"id\":\"{{uuid}}\",\"product_id\":\"{{uuid}}\",\"product_name\":\"Test Product\",\"quantity\":2,\"unit_price\":52.75}],\"created_at\":\"{{now}}\",\"updated_at\":\"{{now}}\"}}"
+  }
+} 

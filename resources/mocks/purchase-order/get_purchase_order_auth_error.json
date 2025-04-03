@@ -1,0 +1,13 @@
+{
+  "description": "Get purchase order by ID - authentication error",
+  "request": {
+    "method": "GET",
+    "path": "/purchase-orders/:id"
+  },
+  "response": {
+    "statusCode": 401,
+    "headers": {
+      "Content-Type": ["application/json"]
+    }  
+  }
+} 
